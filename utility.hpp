@@ -11,6 +11,7 @@ class coord
 
     coord(long long int val);
     bool operator<(const coord& other) const;
+    bool operator==(const coord& other) const;
 };
 
 class point
@@ -27,7 +28,8 @@ class interval
     coord bottom, top;
 
     interval(coord bottom, coord top);
-    //bool operator<(const interval& other) const;
+    bool operator<(const interval& other) const;
+    bool operator==(const interval& other) const;
 };
 
 class line_segment
@@ -61,6 +63,7 @@ class edge
     edgetype side;
 
     edge(interval int_val, coord coord_val, edgetype side);
+    bool operator<(const edge& other) const;
 };
 
 class stripe
@@ -73,16 +76,14 @@ class stripe
 };
 
 
-std::vector<rectangle> union_(std::vector<rectangle> R);
+//std::vector<rectangle> union_(std::vector<rectangle> R);
 
 std::set<coord> y_set(std::vector<rectangle> R);
 
-std::vector<interval> partition(std::set<coord> Y);
+std::set<interval> partition(std::set<coord> Y);
 
-std::vector<coord> x_proj(std::vector<point> points);
+//std::vector<coord> x_proj(std::vector<point> points);
 
-std::vector<interval> intervals(std::vector<coord> coords); 
-
-std::vector<stripe> stripes(std::vector<rectangle> R, rectangle f);
+//std::vector<interval> intervals(std::vector<coord> coords);
 
 #endif
