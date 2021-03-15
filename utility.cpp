@@ -12,6 +12,14 @@ bool coord::operator==(const coord& other) const
     return (this->val == other.val);
 }
 
+bool coord::operator!=(const coord& other) const
+{
+    return (this->val != other.val);
+}
+bool coord::operator+(const coord& other) const{
+    return (this->val + other.val);
+}
+
 point::point(coord x, coord y) : x(x), y(y) {}
 
 interval::interval(coord bottom, coord top) : bottom(bottom), top(top) {}
