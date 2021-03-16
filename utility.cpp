@@ -7,6 +7,11 @@ bool coord::operator<(const coord& other) const
     return this->val < other.val;
 }
 
+bool coord::operator>(const coord& other) const
+{
+    return this->val > other.val;
+}
+
 bool coord::operator==(const coord& other) const
 {
     return (this->val == other.val);
@@ -54,7 +59,7 @@ bool edge::operator<(const edge& other) const
         return this->coord_val < other.coord_val;
 } 
 
-stripe::stripe(interval x_interval, interval y_interval, std::vector<interval> x_union) : x_interval(x_interval), y_interval(y_interval), x_union(x_union) {}
+stripe::stripe(interval x_interval, interval y_interval, std::set<interval> x_union) : x_interval(x_interval), y_interval(y_interval), x_union(x_union) {}
 
 
 
@@ -98,3 +103,9 @@ std::set<interval> partition(std::set<coord> Y)
 // {
 
 // } 
+
+void blacken(std::vector<stripe> S, std::set<interval> J){
+    for(stripe s : S){
+
+    }
+}
