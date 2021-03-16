@@ -1,10 +1,14 @@
 #include "utility.hpp"
-
 coord::coord(long long int inp) : val(val) {}
 
 bool coord::operator<(const coord& other) const
 {
     return this->val < other.val;
+}
+
+bool coord::operator>(const coord& other) const
+{
+    return this->val > other.val;
 }
 
 bool coord::operator==(const coord& other) const
@@ -16,8 +20,24 @@ bool coord::operator!=(const coord& other) const
 {
     return (this->val != other.val);
 }
-bool coord::operator+(const coord& other) const{
-    return (this->val + other.val);
+// coord coord::operator+(const coord& other) const{
+//     long long int a1 = this-> val;
+//     long long int a2 = other.val;
+//     long long int sum = a1+a2;
+//     coord x(sum);
+//     return x;
+// }
+
+// coord coord::operator-(const coord& other) const{
+//     return (coord(this->val - other.val));
+// }
+
+bool coord::operator<=(const coord& other) const{
+    return (this->val <= other.val);
+}
+
+bool coord::operator>=(const coord& other) const{
+    return (this->val >= other.val);
 }
 
 point::point(coord x, coord y) : x(x), y(y) {}
@@ -46,7 +66,7 @@ edge::edge(interval int_val, coord coord_val, edgetype side) : int_val(int_val),
 
 bool edge::operator<(const edge& other) const
 {
-    if((this->int_val == other.int_val) && (this->coord_val == other.coord_val))
+    if(this->coord_val == other.coord_val)
     {
         return this->side == left;
     }
@@ -54,7 +74,7 @@ bool edge::operator<(const edge& other) const
         return this->coord_val < other.coord_val;
 } 
 
-stripe::stripe(interval x_interval, interval y_interval, std::vector<interval> x_union) : x_interval(x_interval), y_interval(y_interval), x_union(x_union) {}
+stripe::stripe(interval x_interval, interval y_interval, std::set<interval> x_union) : x_interval(x_interval), y_interval(y_interval), x_union(x_union) {}
 
 
 
@@ -98,3 +118,90 @@ std::set<interval> partition(std::set<coord> Y)
 // {
 
 // } 
+
+void blacken(std::vector<stripe> S, std::set<interval> J){
+    // std::set<coord> D;
+    // std::set<coord> T;
+    // for(interval i : J){
+    //     D.insert(i.bottom);
+    //     T.insert(i.top);
+    // }
+    // for(stripe s : S){
+    //     auto it_top = T.upper_bound(s.y_interval.top);
+    //     if(it_top == T.end()){
+    //         auto it_top_sub = T.lower_bound(s.y_interval.top);
+    //         if((*it_top_sub)==s.y_interval.top){
+    //             it_top = it_top_sub;
+    //         }
+    //         else continue;
+    //     }
+    //     auto it_down = D.upper_bound(s.y_interval.bottom);
+    //     if(it_down == D.begin()){
+    //         continue;
+    //     }
+    //     else it_down = --(it_down);
+
+    // }
+    for(stripe s : S){
+        for(interval i : J){
+            if(s.y_interval.bottom>=i.bottom && s.y_interval.top<=i.top){
+                s.x_union.insert(s.x_interval);
+                break;
+            }
+        }
+    }
+}
+
+std::vector<stripe> copy(std::vector<stripe> Sdash, std::set<coord> P, interval interval_val){
+    std::vector<stripe> S;
+    for(interval s_int : partition(P)){
+            interval ix = interval_val;
+            interval iy = s_int;
+            std::set<interval> phi;
+            S.push_back(stripe(ix, iy, phi));
+        }
+        int idash =0;
+        for(int i=0;i<Sdash.size(); ){
+            while(S[i].y_interval.bottom>=Sdash[idash].y_interval.bottom && S[i].y_interval.top <= Sdash[idash].y_interval.top){
+                S[i].x_union = Sdash[idash].x_union;
+                i++;
+            }
+            idash++;
+        }
+        return S;
+}
+
+std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::set<coord> P, interval x_ext){
+    std::vector<stripe> S;
+    for(interval s_int : partition(P)){
+            interval ix = x_ext;
+            interval iy = s_int;
+            std::set<interval> phi;
+            S.push_back(stripe(ix, iy, phi));
+        }
+    for(int i=0; i<S.size(); i++){
+        std::set<interval> phi;
+        auto it_left = S_left[i].x_union.end();
+        it_left--;
+        auto it_right = S_right[i].x_union.begin();
+        if((*it_left).top != (*it_right).bottom){
+            for(interval i : S_left[i].x_union){
+                phi.insert(i);
+            }
+            for(interval i : S_right[i].x_union){
+                phi.insert(i);
+            }
+        }
+        else{
+            for(auto it = S_left[i].x_union.begin() ; it!= --(S_left[i].x_union.end()) ; it++){
+                phi.insert(*it);
+            }
+            for(auto it = ++(S_right[i].x_union.begin()) ; it!= (S_right[i].x_union.end()) ; it++){
+                phi.insert(*it);
+            }
+            phi.insert(interval((*it_left).bottom, (*it_right).top));
+        }
+        S[i].x_union = phi;
+    }
+    return S;
+}

@@ -4,6 +4,7 @@
 #include <climits>
 #include "utility.hpp"
 #include "stripes.hpp"
+#include <iostream>
 
 void rectangle_dac(std::vector<rectangle> RECT, std::vector<stripe>& S)
 {
@@ -18,11 +19,13 @@ void rectangle_dac(std::vector<rectangle> RECT, std::vector<stripe>& S)
         VRX.push_back(e_left);
         VRX.push_back(e_right);
     }
-
+    //std::cout<<"Here\n";
     std::sort(VRX.begin(), VRX.end());
     interval x_ext(coord(LLONG_MIN), coord(LLONG_MAX));
 
     std::set<interval> LEFT, RIGHT;
     std::set<coord> POINTS;
+    std::cout<<"bfr stripes\n";
     stripes(VRX, x_ext, LEFT, RIGHT, POINTS, S);
+    std::cout<<"afr stripes\n";
 }
