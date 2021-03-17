@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <set>
-
 class coord
 {
     public:
@@ -13,8 +12,12 @@ class coord
     bool operator<(const coord& other) const;
     bool operator>(const coord& other) const;
     bool operator==(const coord& other) const;
+    bool operator>(const coord& other) const;
     bool operator!=(const coord& other) const;
-    bool operator+(const coord& other) const;
+    // coord operator+(const coord& other) const;
+    // coord operator-(const coord& other) const;
+    bool operator<=(const coord& other) const;
+    bool operator>=(const coord& other) const;
 };
 
 class point
@@ -33,6 +36,7 @@ class interval
     interval(coord bottom, coord top);
     bool operator<(const interval& other) const;
     bool operator==(const interval& other) const;
+    
 };
 
 class line_segment
@@ -67,7 +71,7 @@ class edge
 
     edge(interval int_val, coord coord_val, edgetype side);
     bool operator<(const edge& other) const;
-};
+    };
 
 class stripe
 {
@@ -91,7 +95,9 @@ std::set<interval> partition(std::set<coord> Y);
 
 std::vector<stripe> copy(std::vector<stripe> S, std::set<coord> P, interval interval_val);
 
-void blacken(std::vector<stripe> S, std::set<interval> J);
+
+void blacken(std::vector<stripe>& S_left, std::set<interval> R2_LR);
+
 
 std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::set<coord> P, interval x_ext);
 
