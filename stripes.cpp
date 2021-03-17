@@ -13,7 +13,8 @@ std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x
             LR.insert(*it);
         }
     }
-    // computing L
+
+    // computing L 
     for(auto it=L1.begin(); it != L1.end(); it++)
     {
         if(LR.find(*it) == LR.end())
@@ -28,7 +29,6 @@ std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x
     }
 
     // Computing R
-
     for(auto it=R2.begin(); it != R2.end(); it++)
     {
         if(LR.find(*it) == LR.end())
@@ -52,7 +52,7 @@ std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x
         P.insert(*it);
     }
     
-    //std::cout << "WHAT THE GOWTHAM\n";
+    //std::cout << "WHAT THE PRANITH\n";
 
     // Computing S_left
     std::vector<stripe> S_left;
