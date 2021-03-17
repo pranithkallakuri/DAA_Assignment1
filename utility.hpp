@@ -12,7 +12,6 @@ class coord
     bool operator<(const coord& other) const;
     bool operator>(const coord& other) const;
     bool operator==(const coord& other) const;
-    bool operator>(const coord& other) const;
     bool operator!=(const coord& other) const;
     // coord operator+(const coord& other) const;
     // coord operator-(const coord& other) const;
