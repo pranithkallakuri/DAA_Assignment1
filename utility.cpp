@@ -1,5 +1,7 @@
 #include "utility.hpp"
-coord::coord(long long int inp) : val(val) {}
+#include <iostream>
+
+coord::coord(long long int val) : val(val) {}
 
 bool coord::operator<(const coord& other) const
 {
@@ -153,27 +155,54 @@ void blacken(std::vector<stripe> S, std::set<interval> J){
 }
 
 std::vector<stripe> copy(std::vector<stripe> Sdash, std::set<coord> P, interval interval_val){
+    int lll = 0;
+    for(stripe s : Sdash)
+    {
+        std::cout << "------------------------------\n";
+        std::cout << "Stripe " << lll++ << "\n";
+        for(interval x : s.x_union)
+        {
+            std::cout << "(" << x.bottom.val << ", " << x.top.val << ")\n";
+        }
+    }
+    std::cout << "########################################\n";
+    
     std::vector<stripe> S;
-    for(interval s_int : partition(P)){
+    std::set<interval> it_P = partition(P);
+    for(interval s_int : it_P){
             interval ix = interval_val;
             interval iy = s_int;
             std::set<interval> phi;
             S.push_back(stripe(ix, iy, phi));
         }
         int idash =0;
-        for(int i=0;i<Sdash.size(); ){
+        for(int i=0;i<S.size(); ){
             while(S[i].y_interval.bottom>=Sdash[idash].y_interval.bottom && S[i].y_interval.top <= Sdash[idash].y_interval.top){
                 S[i].x_union = Sdash[idash].x_union;
                 i++;
             }
             idash++;
+            std::cout<<"While ended , idash-- "<<idash<<"\n";
+        }
+        std::cout<<"Size of S- "<<S.size()<<"\n";
+        int lllll = 0;
+        for(stripe s : S)
+        {
+            std::cout << "------------------------------\n";
+            std::cout << "Stripe " << lllll++ << "\n";
+            for(interval x : s.x_union)
+            {
+                std::cout << "(" << x.bottom.val << ", " << x.top.val << ")\n";
+            }
         }
         return S;
 }
 
 std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::set<coord> P, interval x_ext){
+
     std::vector<stripe> S;
-    for(interval s_int : partition(P)){
+    std::set<interval> it_P = partition(P);
+    for(interval s_int : it_P){
             interval ix = x_ext;
             interval iy = s_int;
             std::set<interval> phi;
@@ -181,9 +210,19 @@ std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_rig
         }
     for(int i=0; i<S.size(); i++){
         std::set<interval> phi;
+        if(S_left[i].x_union.size() == 0)
+        {
+            phi = S_right[i].x_union;
+            continue;
+        }
+        if(S_right[i].x_union.size() == 0)
+        {
+            phi = S_left[i].x_union;
+            continue;
+        }
         auto it_left = S_left[i].x_union.end();
-        it_left--;
         auto it_right = S_right[i].x_union.begin();
+        it_left--;
         if((*it_left).top != (*it_right).bottom){
             for(interval i : S_left[i].x_union){
                 phi.insert(i);
