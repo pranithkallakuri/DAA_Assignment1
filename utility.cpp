@@ -121,6 +121,7 @@ std::set<interval> partition(std::set<coord> Y)
 
 // } 
 
+
 void blacken(std::vector<stripe>& S, std::set<interval> J){
     // std::set<coord> D;
     // std::set<coord> T;
@@ -296,3 +297,6 @@ std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_rig
     std::cout<<"Concat ended-------------------\n";
     return S;
 }
+
+
+
