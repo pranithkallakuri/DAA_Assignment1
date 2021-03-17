@@ -2,7 +2,7 @@
 #include "utility.hpp"
 #include <climits>
 #include <iostream>
-void merge(std::set<interval> L, std::set<interval> R,std::set<interval> L1, std::set<interval> R1,std::set<interval> L2, std::set<interval> R2,std::set<coord> P,std::set<coord> P1,std::set<coord> P2,
+void merge(std::set<interval>& L, std::set<interval>& R,std::set<interval> L1, std::set<interval> R1,std::set<interval> L2, std::set<interval> R2,std::set<coord>& P,std::set<coord> P1,std::set<coord> P2,
 std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x_ext ,coord xm)
 {
     std::set<interval> LR ,R2_LR , L1_LR;
@@ -51,7 +51,7 @@ std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x
     {
         P.insert(*it);
     }
-
+    
     //std::cout << "WHAT THE GOWTHAM\n";
 
     // Computing S_left
@@ -59,8 +59,13 @@ std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x
     std::vector<stripe> S_right;
     S_left = copy(S1, P, interval(x_ext.bottom, xm));
     //std::cout << "WHAT THE GOWTHAM2\n";
-    S_right = copy(S2, P, interval(xm, x_ext.bottom));
-
+    S_right = copy(S2, P, interval(xm, x_ext.top));
+    std::cout<<"before blacken only S_right\n";
+    for(int i=0;i<S_right.size(); i++)
+    {
+        std::cout<<"Stripe_right "<<i<<"\n";
+        std::cout<<"x-int ("<<S_right[i].x_interval.bottom.val<< " , "<<S_right[i].x_interval.top.val<<")\n";
+    }
     blacken(S_left,R2_LR);
     //std::cout << "WHAT THE GOWTHAM3\n";
     blacken(S_right,L1_LR);
@@ -157,7 +162,25 @@ void stripes(std::vector<edge> V, interval x_ext, std::set<interval>& L, std::se
         std::cout << "v2.size()" << V2.size() << "\n";
         stripes(V1, interval(x_ext.bottom, xm), L1, R1, P1, S1);
         stripes(V2, interval(xm, x_ext.top), L2, R2, P2, S2);
-        std::cout << "Merging\n";
+        std::cout<<"P1 before merge\n";
+        for(coord c : P1){
+            std::cout<<c.val<<"\n";
+        }
+        std::cout<<"P1 done\n";
+
+        std::cout<<"P2 before merge\n";
+        for(coord c : P2){
+            std::cout<<c.val<<"\n";
+        }
+        std::cout<<"P2 done\n";
+        
+        std::cout<<"merging....................\n";
         merge(L, R, L1, R1, L2, R2, P, P1, P2, S, S1, S2, x_ext, xm);
+        std::cout<<"merging done :) ....................\n";
+        std::cout<<"P after merge\n";
+        for(coord c : P){
+            std::cout<<c.val<<"\n";
+        }
+        std::cout<<"P done\n";
     }
 }

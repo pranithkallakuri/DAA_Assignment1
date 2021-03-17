@@ -21,6 +21,8 @@ void rectangle_dac(std::vector<rectangle> RECT, std::vector<stripe>& S)
         VRX.push_back(e_right);
     }
 
+    
+    std::sort(VRX.begin(), VRX.end());
     for (edge e : VRX)
     {
         std::cout << "-------------------------------\n";
@@ -31,7 +33,6 @@ void rectangle_dac(std::vector<rectangle> RECT, std::vector<stripe>& S)
     }
     std::cout << "-------------------------------\n";
     std::cout<<"VRX.size() = " << VRX.size() << "\n";
-    std::sort(VRX.begin(), VRX.end());
     interval x_ext(coord(LLONG_MIN), coord(LLONG_MAX));
 
     std::set<interval> LEFT, RIGHT;

@@ -94,7 +94,7 @@ std::set<interval> partition(std::set<coord> Y);
 
 std::vector<stripe> copy(std::vector<stripe> S, std::set<coord> P, interval interval_val);
 
-void blacken(std::vector<stripe> S_left, std::set<interval> R2_LR);
+void blacken(std::vector<stripe>& S_left, std::set<interval> R2_LR);
 
 std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::set<coord> P, interval x_ext);
 
