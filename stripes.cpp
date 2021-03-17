@@ -76,7 +76,7 @@ std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x
 void stripes(std::vector<edge> V, interval x_ext, std::set<interval>& L, std::set<interval>& R, std::set<coord>& P, std::vector<stripe>& S){
     if(V.size()==1){
         auto it = V.begin();
-        if((*it).side == left){ 
+        if((*it).side == edgetype::left){ 
             L.insert((*it).int_val);
             R.clear();
         }
@@ -108,11 +108,15 @@ void stripes(std::vector<edge> V, interval x_ext, std::set<interval>& L, std::se
             if( (itr.find((*itr_s).y_interval) != itr.end()) )
             {
                 std::cout << "count = " << cnt++ << "\n";
-                if((*it).side == left){
+                if((*it).side == edgetype::left){
                     (*itr_s).x_union.insert(interval((*it).coord_val, x_ext.top));
+                    (*itr_s).x_measure = (unsigned long long int)(x_ext.top.val - (*it).coord_val.val);
+                     (*itr_s).tree = &ctree((*it).coord_val.val, lru::left, NULL, NULL);
                 }
                 else {
                     (*itr_s).x_union.insert(interval(x_ext.bottom, (*it).coord_val));
+                    (*itr_s).x_measure = (unsigned long long int)((*it).coord_val.val - x_ext.bottom.val);
+                    (*itr_s).tree = &ctree((*it).coord_val.val, lru::right, NULL, NULL);
                 }
             }
         }

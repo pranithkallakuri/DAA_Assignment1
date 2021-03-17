@@ -70,13 +70,27 @@ class edge
 
     edge(interval int_val, coord coord_val, edgetype side);
     bool operator<(const edge& other) const;
-    };
+};
+
+enum lru{left, right, undef};
+
+class ctree
+{
+    public:
+    long long int x;
+    lru side;
+    ctree *lson = NULL;
+    ctree *rson = NULL;
+    ctree(long long int x, lru side, ctree* lson, ctree* rson);
+};
 
 class stripe
 {
     public:
     interval x_interval, y_interval;    
     std::set<interval> x_union;
+    unsigned long long int x_measure = 0;
+    ctree *tree = NULL;
 
     stripe(interval x_interval, interval y_interval, std::set<interval> x_union);
 };
