@@ -78,7 +78,7 @@ bool edge::operator<(const edge& other) const
         return this->coord_val < other.coord_val;
 } 
 
-stripe::stripe(interval x_interval, interval y_interval, std::set<interval> x_union) : x_interval(x_interval), y_interval(y_interval), x_union(x_union) {}
+stripe::stripe(interval x_interval, interval y_interval, std::vector<interval> x_union) : x_interval(x_interval), y_interval(y_interval), x_union(x_union) {}
 
 
 
@@ -98,16 +98,16 @@ std::set<coord> y_set(std::vector<rectangle> R)
     return s;
 }
 
-std::set<interval> partition(std::set<coord> Y)
+std::vector<interval> partition(std::vector<coord> Y)
 {
-    std::set<interval> vect;
+    std::vector<interval> vect;
     coord prev = *Y.begin();
     for(auto it = ++Y.begin(); it != Y.end(); ++it)
     {
         coord bottom = prev;
         coord top = *it;
         interval i(bottom, top);
-        vect.insert(i);
+        vect.push_back(i);       // need to check
         prev = top;
     }
     return vect;
@@ -124,7 +124,7 @@ std::set<interval> partition(std::set<coord> Y)
 // } 
 
 
-void blacken(std::vector<stripe>& S, std::set<interval> J){
+void blacken(std::vector<stripe>& S, std::vector<interval> J){
     // for(auto it = S.begin(); it!= S.end(); it++){
     //     for(interval i : J){
     //         if((*(it)).y_interval.bottom>=i.bottom && (*(it)).y_interval.top<=i.top){
@@ -148,7 +148,7 @@ void blacken(std::vector<stripe>& S, std::set<interval> J){
         if(in == 1)
         {
             (*s_it).x_union.clear();
-            (*s_it).x_union.insert((*s_it).x_interval);
+            (*s_it).x_union.push_back((*s_it).x_interval);     // need to check
             (*s_it).x_measure = (unsigned long long int)((*s_it).x_interval.top.val - (*s_it).x_interval.bottom.val);
             (*s_it).tree = NULL; 
             s_it++;
@@ -157,7 +157,7 @@ void blacken(std::vector<stripe>& S, std::set<interval> J){
     }
 }
 
-std::vector<stripe> copy(std::vector<stripe> Sdash, std::set<coord> P, interval interval_val){
+std::vector<stripe> copy(std::vector<stripe> Sdash, std::vector<coord> P, interval interval_val){
     int lll = 0;
     for(stripe s : Sdash)
     {
@@ -177,25 +177,30 @@ std::vector<stripe> copy(std::vector<stripe> Sdash, std::set<coord> P, interval 
     }
     std::cout<<"##################Parition ended\n";
     std::vector<stripe> S;
-    std::set<interval> it_P = partition(P);
+    std::vector<interval> it_P = partition(P);
     lll =0;
-    for(interval s_int : it_P){
+    for(interval s_int : it_P)
+    {
+            std::cout << "y_interval width = " << "(" << s_int.bottom.val << ", " << s_int.top.val << ")" << "\n";
             interval ix = interval_val;
             interval iy = s_int;
-            std::set<interval> phi;
+            std::vector<interval> phi;
             S.push_back(stripe(ix, iy, phi));
         }
         int idash =0;
-        std::cout<<"S Size"<<S.size()<<"\n";
+        std::cout<<"S Size "<<S.size()<<"\n";
+        std::cout<<"Sdash Size "<<Sdash.size()<<"\n";
         for(int i=0;i<S.size(); ){
             while(i<S.size() && S[i].y_interval.bottom.val>=Sdash[idash].y_interval.bottom.val && S[i].y_interval.top.val <= Sdash[idash].y_interval.top.val){
                 S[i].x_union = Sdash[idash].x_union;
                 S[i].x_measure = Sdash[idash].x_measure;
                 S[i].tree = Sdash[idash].tree;
                 i++;
+                std::cout << "i = " << i << "\n";
                 //std::cout<<"upcoming s y interval ("<<S[i].y_interval.bottom.val<<" , "<<S[i].y_interval.top.val<<")\n";
             }
             idash++;
+            std::cout << "idash = " << idash << "\n";
             //std::cout<<"upcoming sdash y interval ("<<Sdash[i].y_interval.bottom.val<<" , "<<Sdash[i].y_interval.top.val<<")\n";
         }
         //std::cout<<"Size of S- "<<S.size()<<"\n";
@@ -212,7 +217,7 @@ std::vector<stripe> copy(std::vector<stripe> Sdash, std::set<coord> P, interval 
         return S;
 }
 
-std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::set<coord> P, interval x_ext){
+std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::vector<coord> P, interval x_ext){
     std::cout<<"S_left details\n";
     int abcde=0;
     for(stripe s : S_left){
@@ -230,15 +235,15 @@ std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_rig
         }
     }
     std::vector<stripe> S;
-    std::set<interval> it_P = partition(P);
+    std::vector<interval> it_P = partition(P);
     for(interval s_int : it_P){
             interval ix = x_ext;
             interval iy = s_int;
-            std::set<interval> phi;
+            std::vector<interval> phi;
             S.push_back(stripe(ix, iy, phi));
         }
     for(int i=0; i<S.size(); i++){
-        std::set<interval> phi;
+        std::vector<interval> phi;
         if(S_left[i].x_union.size() == 0)
         {
             phi = S_right[i].x_union;
@@ -270,24 +275,25 @@ std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_rig
         it_left--;
         if((*it_left).top != (*it_right).bottom){
             for(interval i : S_left[i].x_union){
-                phi.insert(i);
+                phi.push_back(i);                 // need to check
             }
             for(interval i : S_right[i].x_union){
-                phi.insert(i);
+                phi.push_back(i);                 // need to check
             }
         }
         else{
             for(auto it = S_left[i].x_union.begin() ; it!= --(S_left[i].x_union.end()) ; it++){
-                phi.insert(*it);
+                phi.push_back(*it);              // need to check
             }
             for(auto it = ++(S_right[i].x_union.begin()) ; it!= (S_right[i].x_union.end()) ; it++){
-                phi.insert(*it);
+                phi.push_back(*it);                // need to check
             }
-            phi.insert(interval((*it_left).bottom, (*it_right).top));
+            phi.push_back(interval((*it_left).bottom, (*it_right).top));   // need to check
         }
         S[i].x_union = phi;
         S[i].x_measure = S_left[i].x_measure + S_right[i].x_measure;
-        S[i].tree = &ctree(S_left[i].x_interval.top.val, lru::undef, S_left[i].tree, S_right[i].tree);
+        ctree treee(S_left[i].x_interval.top.val, lru::u, S_left[i].tree, S_right[i].tree);
+        S[i].tree = &treee;
         std::cout<<"x_union of Stripe "<<i<<"\n";
         for(interval i : S[i].x_union){
             std::cout<<"( "<<i.bottom.val<<" , "<<i.top.val<<")\n";

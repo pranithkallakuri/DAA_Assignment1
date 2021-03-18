@@ -4,9 +4,9 @@
 #include<set>
 #include "utility.hpp"
 
-void merge(std::set<interval>& L, std::set<interval>& R,std::set<interval> L1, std::set<interval> R1,std::set<interval> L2, std::set<interval> R2,std::set<coord>& P,std::set<coord> P1,std::set<coord> P2,
+void merge(std::vector<interval>& L, std::vector<interval>& R,std::vector<interval> L1, std::vector<interval> R1,std::vector<interval> L2, std::vector<interval> R2,std::vector<coord>& P,std::vector<coord> P1,std::vector<coord> P2,
 std::vector<stripe>& S,std::vector<stripe> S1,std::vector<stripe> S2, interval x_ext ,coord xm);
 
-void stripes(std::vector<edge> V, interval x_ext, std::set<interval>& L, std::set<interval>& R, std::set<coord>& P, std::vector<stripe>& S);
+void stripes(std::vector<edge> V, interval x_ext, std::vector<interval>& L, std::vector<interval>& R, std::vector<coord>& P, std::vector<stripe>& S);
 
 #endif

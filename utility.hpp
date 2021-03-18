@@ -72,7 +72,7 @@ class edge
     bool operator<(const edge& other) const;
 };
 
-enum lru{left, right, undef};
+enum lru{l, r, u};
 
 class ctree
 {
@@ -88,11 +88,11 @@ class stripe
 {
     public:
     interval x_interval, y_interval;    
-    std::set<interval> x_union;
+    std::vector<interval> x_union;
     unsigned long long int x_measure = 0;
     ctree *tree = NULL;
 
-    stripe(interval x_interval, interval y_interval, std::set<interval> x_union);
+    stripe(interval x_interval, interval y_interval, std::vector<interval> x_union);
 };
 
 
@@ -100,18 +100,18 @@ class stripe
 
 std::set<coord> y_set(std::vector<rectangle> R);
 
-std::set<interval> partition(std::set<coord> Y);
+std::vector<interval> partition(std::vector<coord> Y);
 
 //std::vector<coord> x_proj(std::vector<point> points);
 
 //std::vector<interval> intervals(std::vector<coord> coords);
 
-std::vector<stripe> copy(std::vector<stripe> S, std::set<coord> P, interval interval_val);
+std::vector<stripe> copy(std::vector<stripe> S, std::vector<coord> P, interval interval_val);
 
 
-void blacken(std::vector<stripe>& S_left, std::set<interval> R2_LR);
+void blacken(std::vector<stripe>& S_left, std::vector<interval> R2_LR);
 
 
-std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::set<coord> P, interval x_ext);
+std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::vector<coord> P, interval x_ext);
 
 #endif

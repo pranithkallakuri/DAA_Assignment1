@@ -35,8 +35,8 @@ void rectangle_dac(std::vector<rectangle> RECT, std::vector<stripe>& S)
     std::cout<<"VRX.size() = " << VRX.size() << "\n";
     interval x_ext(coord(LLONG_MIN), coord(LLONG_MAX));
 
-    std::set<interval> LEFT, RIGHT;
-    std::set<coord> POINTS;
+    std::vector<interval> LEFT, RIGHT;
+    std::vector<coord> POINTS;
     std::cout<<"bfr stripes\n";
     stripes(VRX, x_ext, LEFT, RIGHT, POINTS, S);
     std::cout<<"afr stripes\n";
