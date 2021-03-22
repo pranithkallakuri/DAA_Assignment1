@@ -3,7 +3,7 @@
 #include <vector>
 #include "utility.hpp"
 #include <set>
-
+/** @file */
 /**
  * @brief The function "measure" computes the union of the area of all rectangles. That is, it computes the total area covered by the input iso-rectangles
  * 
