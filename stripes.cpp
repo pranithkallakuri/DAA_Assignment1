@@ -303,24 +303,37 @@ void stripes(std::vector<edge> V, interval x_ext, std::vector<interval>& L, std:
                 if((*it).side == edgetype::left){
                     (*itr_s).x_union.push_back(interval((*it).coord_val, x_ext.top));
                     (*itr_s).x_measure = (unsigned long long int)(x_ext.top.val - (*it).coord_val.val);
-                    ctree treee((*it).coord_val.val, lru::l, NULL, NULL);
-                    (*itr_s).tree = &treee;
+                    //std::cout << "coord_val = " << (*it).coord_val.val << "\n";
+                    (*itr_s).tree = (ctree *)malloc(sizeof(ctree));
+                    (*itr_s).tree->x = (*it).coord_val.val;
+                    (*itr_s).tree->side = lru::l;
+                    (*itr_s).tree->lson = NULL;
+                    (*itr_s).tree->rson = NULL;
+                    printf("base case left tree ");
+                    printf("%lld\n", (*itr_s).tree->x);
                 }
                 else {
                     (*itr_s).x_union.push_back(interval(x_ext.bottom, (*it).coord_val));
                     (*itr_s).x_measure = (unsigned long long int)((*it).coord_val.val - x_ext.bottom.val);
-                    ctree treee((*it).coord_val.val, lru::r, NULL, NULL);
-                    (*itr_s).tree = &treee;
+                    //std::cout << "coord_val = " << (*it).coord_val.val << "\n";
+                    (*itr_s).tree = (ctree *)malloc(sizeof(ctree));
+                    (*itr_s).tree->x = (*it).coord_val.val;
+                    (*itr_s).tree->side = lru::r;
+                    (*itr_s).tree->lson = NULL;
+                    (*itr_s).tree->rson = NULL;
+                    printf("base case right tree ");
+                    printf("%lld\n", (*itr_s).tree->x);
                 }
             }
         }
         std::cout << "----------------------------\n";
         std::cout << "START OF BASE CASE\n";
         int lllll = 0;
-        for(stripe s : S)
+        for(stripe& s : S)
         {
             std::cout << "------------------------------\n";
             std::cout << "Stripe " << lllll++ << "\n";
+            if(s.tree != NULL) std::cout << "ctree.x = " << (s.tree->x) << "\n";
             std::cout << "x_interval = (" << s.x_interval.bottom.val << ", " << s.x_interval.top.val << ")\n";
             std::cout << "y_interval = (" << s.y_interval.bottom.val << ", " << s.y_interval.top.val << ")\n";
             for(interval x : s.x_union)

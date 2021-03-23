@@ -21,6 +21,7 @@ int main(){
     }
     std::vector<stripe> S;
     rectangle_dac(R, S);
+    
     //std::cout<<"Before measure\n";
     std::cout<<"Measure is: "<< measure(S) << "\n";
     return 0;

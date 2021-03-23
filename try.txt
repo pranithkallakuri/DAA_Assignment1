@@ -1,0 +1,15 @@
+#include <iostream>
+#include <set>
+#include "utility.hpp"
+
+int main()
+{
+    
+    std::set<interval> S ;
+    S.insert(interval(coord(-3), coord(3)));
+    S.insert(interval(coord(-5), coord(6)));
+
+    std::cout << (S.find(interval(coord(-3), coord(3))) == S.end()) << "\n";
+
+n 0;
+}

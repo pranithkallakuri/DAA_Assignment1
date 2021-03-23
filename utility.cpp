@@ -181,40 +181,40 @@ std::vector<stripe> copy(std::vector<stripe> Sdash, std::vector<coord> P, interv
     lll =0;
     for(interval s_int : it_P)
     {
-            std::cout << "y_interval width = " << "(" << s_int.bottom.val << ", " << s_int.top.val << ")" << "\n";
-            interval ix = interval_val;
-            interval iy = s_int;
-            std::vector<interval> phi;
-            S.push_back(stripe(ix, iy, phi));
+        std::cout << "y_interval width = " << "(" << s_int.bottom.val << ", " << s_int.top.val << ")" << "\n";
+        interval ix = interval_val;
+        interval iy = s_int;
+        std::vector<interval> phi;
+        S.push_back(stripe(ix, iy, phi));
+    }
+    int idash =0;
+    std::cout<<"S Size "<<S.size()<<"\n";
+    std::cout<<"Sdash Size "<<Sdash.size()<<"\n";
+    for(int i=0;i<S.size(); ){
+        while(i<S.size() && S[i].y_interval.bottom.val>=Sdash[idash].y_interval.bottom.val && S[i].y_interval.top.val <= Sdash[idash].y_interval.top.val){
+            S[i].x_union = Sdash[idash].x_union;
+            S[i].x_measure = Sdash[idash].x_measure;
+            S[i].tree = Sdash[idash].tree;
+            i++;
+            std::cout << "i = " << i << "\n";
+            //std::cout<<"upcoming s y interval ("<<S[i].y_interval.bottom.val<<" , "<<S[i].y_interval.top.val<<")\n";
         }
-        int idash =0;
-        std::cout<<"S Size "<<S.size()<<"\n";
-        std::cout<<"Sdash Size "<<Sdash.size()<<"\n";
-        for(int i=0;i<S.size(); ){
-            while(i<S.size() && S[i].y_interval.bottom.val>=Sdash[idash].y_interval.bottom.val && S[i].y_interval.top.val <= Sdash[idash].y_interval.top.val){
-                S[i].x_union = Sdash[idash].x_union;
-                S[i].x_measure = Sdash[idash].x_measure;
-                S[i].tree = Sdash[idash].tree;
-                i++;
-                std::cout << "i = " << i << "\n";
-                //std::cout<<"upcoming s y interval ("<<S[i].y_interval.bottom.val<<" , "<<S[i].y_interval.top.val<<")\n";
-            }
-            idash++;
-            std::cout << "idash = " << idash << "\n";
-            //std::cout<<"upcoming sdash y interval ("<<Sdash[i].y_interval.bottom.val<<" , "<<Sdash[i].y_interval.top.val<<")\n";
-        }
-        //std::cout<<"Size of S- "<<S.size()<<"\n";
-        //int lllll = 0;
-        //for(stripe s : S)
-        //{
-        //   std::cout << "------------------------------\n";
-        //    std::cout << "Stripe " << lllll++ << "\n";
-        //    for(interval x : s.x_union)
-        //    {
-        //        std::cout << "(" << x.bottom.val << ", " << x.top.val << ")\n";
-        //    }
-        //}
-        return S;
+        idash++;
+        std::cout << "idash = " << idash << "\n";
+        //std::cout<<"upcoming sdash y interval ("<<Sdash[i].y_interval.bottom.val<<" , "<<Sdash[i].y_interval.top.val<<")\n";
+    }
+    //std::cout<<"Size of S- "<<S.size()<<"\n";
+    //int lllll = 0;
+    //for(stripe s : S)
+    //{
+    //   std::cout << "------------------------------\n";
+    //    std::cout << "Stripe " << lllll++ << "\n";
+    //    for(interval x : s.x_union)
+    //    {
+    //        std::cout << "(" << x.bottom.val << ", " << x.top.val << ")\n";
+    //    }
+    //}
+    return S;
 }
 
 std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_right, std::vector<coord> P, interval x_ext){
@@ -292,8 +292,13 @@ std::vector<stripe> concat(std::vector<stripe> S_left, std::vector<stripe> S_rig
         }
         S[i].x_union = phi;
         S[i].x_measure = S_left[i].x_measure + S_right[i].x_measure;
-        ctree treee(S_left[i].x_interval.top.val, lru::u, S_left[i].tree, S_right[i].tree);
-        S[i].tree = &treee;
+        //ctree treee(S_left[i].x_interval.top.val, lru::u, S_left[i].tree, S_right[i].tree);
+        //S[i].tree = &treee;
+        S[i].tree = (ctree *)malloc(sizeof(ctree));
+        S[i].tree->x = S_left[i].x_interval.top.val;
+        S[i].tree->side = lru::u; 
+        S[i].tree->lson = S_left[i].tree;
+        S[i].tree->rson = S_right[i].tree;
         std::cout<<"x_union of Stripe "<<i<<"\n";
         for(interval i : S[i].x_union){
             std::cout<<"( "<<i.bottom.val<<" , "<<i.top.val<<")\n";
