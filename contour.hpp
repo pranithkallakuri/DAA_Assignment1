@@ -6,7 +6,12 @@
 /** @file */
 
 /**
- * @brief Stores all the nodes b/w a starting and ending point from the binary search tree
+ * @brief Stores all the nodes b/w a starting and ending point from the binary search tree in a vector called nodes
+ * 
+ * @param[in] root The root of the ctree for the stripe
+ * @param[in] left The left end of the query
+ * @param[in] right The right end of the query
+ * @param[out] nodes Contains the leaf nodes that lie in between left and right
  * 
  */
 void search_tree(std::vector<std::pair<long long int, lru>>& nodes, ctree* root, long long int left, long long int right);
