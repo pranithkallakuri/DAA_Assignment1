@@ -23,6 +23,11 @@ int main(){
     {
         long long int x_left, x_right, y_bottom, y_top;
         std::cin >> x_left >> x_right >> y_bottom >> y_top;
+        // std::cout << "read " <<i << "\n" ;
+        // if(x_left > x_right || y_bottom > y_top)
+        // {
+        //     std::cout << "Where\n";
+        // }
         //rectangle r(coord(x_left), coord(x_right), coord(y_bottom), coord(y_top));
         R.push_back(rectangle(coord(x_left), coord(x_right), coord(y_bottom), coord(y_top)));
         H.push_back(edge(interval(coord(x_left), coord(x_right)), coord(y_top), edgetype::top));
@@ -35,7 +40,7 @@ int main(){
     
     //std::cout<<"Before measure\n";
     std::cout<<"Measure is: "<< measure(S) << "\n";
-    //return 0;
+
     std::cout<<"Contours:\n";
     std::vector<edge> contours = contour(H, S);
     //Horizontal contours

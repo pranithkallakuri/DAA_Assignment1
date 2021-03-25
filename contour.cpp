@@ -10,7 +10,7 @@ void search_tree(std::vector<std::pair<long long int, lru>>& nodes, ctree* root,
 
     if(root->x >= left && root->x <= right)
     {
-        std::cout << "root->x = " << root->x << "\n";
+        //std::cout << "root->x = " << root->x << "\n";
         if(root->lson == NULL && root->rson == NULL)
             nodes.push_back({root->x, root->side});
         search_tree(nodes, root->lson, left, right);
@@ -52,24 +52,24 @@ std::vector<interval> contour_pieces(edge h, std::vector<stripe> S, std::vector<
     }
     // index
     int last_ind = S[index].x_union.size() - 1;
-    std::cout<< "Stripe index = " << index << "\n";
-    std::cout << "edge details = interval: " << h.int_val.bottom.val << ", " << h.int_val.top.val << "|| coord_val: " << h.coord_val.val << "\n";
+    // std::cout<< "Stripe index = " << index << "\n";
+    // std::cout << "edge details = interval: " << h.int_val.bottom.val << ", " << h.int_val.top.val << "|| coord_val: " << h.coord_val.val << "\n";
 
     if(S[index].tree == NULL || h.int_val.top.val <= S[index].x_union[0].bottom.val || h.int_val.bottom.val >= S[index].x_union[last_ind].top.val)
     {
-        std::cout << "Heyy\n";
+        //std::cout << "Heyy\n";
         return {interval(h.int_val.bottom, h.int_val.top)};
     }
 
-    std::cout << "Countour1\n";
+    //std::cout << "Countour1\n";
 
     std::vector<std::pair<long long int, lru>> nodes; 
     search_tree(nodes, S[index].tree, h.int_val.bottom.val, h.int_val.top.val);
-    std::cout << "Nodes = \n";
-    for(auto n : nodes)
-    {
-        std::cout << "{" << n.first << ", " << n.second << "}\n";
-    }
+    // std::cout << "Nodes = \n";
+    // for(auto n : nodes)
+    // {
+    //     std::cout << "{" << n.first << ", " << n.second << "}\n";
+    // }
     std::vector<interval> contours;
 
     if(nodes.size() == 0)
@@ -99,6 +99,6 @@ std::vector<interval> contour_pieces(edge h, std::vector<stripe> S, std::vector<
     if(nodes[last_ind].second == lru::r && nodes[last_ind].first != h.int_val.top.val)
         contours.push_back(interval(coord(nodes[last_ind].first), coord(h.int_val.top.val)));
 
-    std::cout << "CountourReturn\n";
+    //std::cout << "CountourReturn\n";
     return contours;
 }

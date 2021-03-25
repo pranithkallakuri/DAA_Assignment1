@@ -5,7 +5,9 @@
 *.in
 *.out
 *.txt
+*.html
 
 /.vscode
 /documentation
 /images
+/results

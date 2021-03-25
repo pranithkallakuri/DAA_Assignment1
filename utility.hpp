@@ -136,7 +136,8 @@ class edge
      */
     edge(interval int_val, coord coord_val, edgetype side);
 
-    bool operator<(const edge& other) const;
+    // bool operator<(const edge& other) const;
+    // edge& operator=(const edge& other);
 };
 
 /**
