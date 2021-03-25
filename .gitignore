@@ -1,0 +1,11 @@
+*.gch
+*.exe
+*.config
+*.csv
+*.in
+*.out
+*.txt
+
+/.vscode
+/documentation
+/images
