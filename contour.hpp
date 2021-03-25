@@ -6,6 +6,12 @@
 /** @file */
 
 /**
+ * @brief Stores all the nodes b/w a starting and ending point from the binary search tree
+ * 
+ */
+void search_tree(std::vector<std::pair<long long int, lru>>& nodes, ctree* root, long long int left, long long int right);
+
+/**
  * @brief
  * 
  * @param[in] h A single horizontal rectangle edge
@@ -15,7 +21,7 @@
  * 
  * @returns A set of intervals that are part of the contour of the input rectangles
  */
-std::set<interval> contour_pieces(edge h, std::vector<stripe> S, std::vector<long long int> bottom_int, std::vector<long long int> top_int);
+std::vector<interval> contour_pieces(edge h, std::vector<stripe> S, std::vector<long long int> bottom_int, std::vector<long long int> top_int);
 
 /**
  * @brief 
@@ -25,5 +31,5 @@ std::set<interval> contour_pieces(edge h, std::vector<stripe> S, std::vector<lon
  * 
  * @returns A set of intervals that denote the horizontal edges present on the contour of the input rectangles
  */
-std::set<interval> contour(std::set<edge> H, std::vector<stripe> S);
+std::vector<edge> contour(std::vector<edge> H, std::vector<stripe> S);
 #endif
